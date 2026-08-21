@@ -50,14 +50,14 @@ nav ul {
   gap: 2rem;
 }
 
-nav a, .teaser-content a {
+nav a, .teaser-content a, .gallery-item a {
   position: relative;
   font-size: 0.95rem;
   letter-spacing: 0.03em;
   padding-bottom: 4px;
 }
 
-nav a::after, .teaser-content a::after {
+nav a::after, .teaser-content a::after, .gallery-item a::after {
   content: '';
   position: absolute;
   left: 0;
@@ -70,7 +70,7 @@ nav a::after, .teaser-content a::after {
   transition: transform 0.3s ease;
 }
 
-nav a:hover::after, .teaser-content a:hover::after {
+nav a:hover::after, .teaser-content a:hover::after, .gallery-item a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -95,8 +95,10 @@ main {
   margin-bottom: 1.5rem;
 }
 
-.hero p, .teaser-content p, .process-steps li {
-  text-align: justify;
+.hero p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  max-width: 60ch;
 }
 
 .teaser {
@@ -125,11 +127,8 @@ main {
   max-width: 60ch;
 }
 
-.hero p, .teaser-content p, .process-steps li {
+.hero p, .teaser-content p, .process-steps li, .event-body p {
   text-align: justify;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
 }
 
 @media (max-width: 700px) {
@@ -266,6 +265,7 @@ main {
 .gallery-item p {
   font-size: 0.9rem;
   opacity: 0.75;
+  margin-bottom: 0.5rem;
 }
 
 .process-steps {
@@ -381,4 +381,29 @@ button[type="submit"]:hover {
 #preloader.hidden {
   opacity: 0;
   visibility: hidden;
+}
+
+.event-hero {
+  border-bottom: 1px solid var(--color-ink);
+  padding-bottom: 3rem;
+  margin-bottom: 3rem;
+}
+
+.event-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin-bottom: 3rem;
+}
+
+.event-body p {
+  max-width: 65ch;
+  margin-bottom: 1.5rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
 }
