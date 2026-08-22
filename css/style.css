@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap');
 
 :root {
   --color-ink: #1b1a17;
@@ -13,16 +13,9 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: var(--color-paper);
-  color: var(--color-ink);
-  line-height: 1.6;
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--color-paper);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  color: var(--color-ink);
+  background-color: var(--color-ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  color: var(--color-paper);
   line-height: 1.6;
 }
 
@@ -58,14 +51,14 @@ nav ul {
   gap: 2rem;
 }
 
-nav a, .teaser-content a, .gallery-item a {
+nav a, .teaser-content a, .gallery-item a, .feature-text a, .statement a {
   position: relative;
   font-size: 0.95rem;
   letter-spacing: 0.03em;
   padding-bottom: 4px;
 }
 
-nav a::after, .teaser-content a::after, .gallery-item a::after {
+nav a::after, .teaser-content a::after, .gallery-item a::after, .feature-text a::after, .statement a::after {
   content: '';
   position: absolute;
   left: 0;
@@ -78,7 +71,7 @@ nav a::after, .teaser-content a::after, .gallery-item a::after {
   transition: transform 0.3s ease;
 }
 
-nav a:hover::after, .teaser-content a:hover::after, .gallery-item a:hover::after {
+nav a:hover::after, .teaser-content a:hover::after, .gallery-item a:hover::after, .feature-text a:hover::after, .statement a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -86,7 +79,7 @@ nav a:hover::after, .teaser-content a:hover::after, .gallery-item a:hover::after
 main {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 4rem 3rem;
+  padding: 0 3rem 4rem;
 }
 
 .eyebrow {
@@ -98,6 +91,39 @@ main {
   opacity: 0.65;
 }
 
+.hero-type {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 3rem;
+}
+
+.hero-type h1 {
+  font-size: clamp(3.5rem, 11vw, 8.5rem);
+  line-height: 1.05;
+  max-width: 12ch;
+  margin-bottom: 2rem;
+}
+
+#cycle-word {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 3rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
 .hero {
   position: relative;
   min-height: 90vh;
@@ -106,30 +132,8 @@ main {
   justify-content: flex-end;
   padding: 4rem 3rem;
   color: var(--color-paper);
-  background-image: linear-gradient(rgba(27,26,23,0.35), rgba(27,26,23,0.8)), url('https://placehold.co/1920x1080/8a7d6a/8a7d6a?text=Studio+Photograph');
   background-size: cover;
   background-position: center;
-}
-
-.hero .eyebrow {
-  color: var(--color-paper);
-  opacity: 0.85;
-}
-
-.hero h1 {
-  font-size: 4rem;
-  margin-bottom: 1.5rem;
-  color: var(--color-paper);
-  max-width: 16ch;
-}
-
-.hero p {
-  color: var(--color-paper);
-  max-width: 60ch;
-}
-
-.cycle-subcopy {
-  color: var(--color-paper);
 }
 
 .event-hero h1 {
@@ -137,12 +141,26 @@ main {
   margin-bottom: 1.5rem;
 }
 
+.teaser, .marquee, .feature, .statement {
+  position: relative;
+}
+
+.teaser::before, .marquee::before, .feature::before, .statement::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-paper);
+  opacity: 0.35;
+}
+
 .teaser {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 3rem;
   padding: 4rem 0;
-  border-top: 1px solid var(--color-ink);
   align-items: start;
 }
 
@@ -163,8 +181,83 @@ main {
   max-width: 60ch;
 }
 
-.hero p, .teaser-content p, .process-steps li, .event-body p {
+.feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  padding: 5rem 0;
+  align-items: center;
+}
+
+.feature--flip .feature-media {
+  order: 2;
+}
+
+.feature-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.feature-text h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.feature-text p {
+  margin-bottom: 1.5rem;
+  max-width: 55ch;
+}
+
+.statement {
+  padding: 6rem 0;
+  text-align: center;
+}
+
+.statement .big {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  line-height: 1.35;
+  max-width: 26ch;
+  margin: 0 auto 1.5rem;
+}
+
+.hero p, .teaser-content p, .process-steps li, .event-body p, .feature-text p {
   text-align: justify;
+}
+
+.series-artist {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.series-artist img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.artist-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  display: block;
+}
+
+.artist-role {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  display: block;
+}
+
+[data-images] img {
+  transition: transform 0.4s ease;
+}
+
+[data-images].active img {
+  transform: scale(1.04);
 }
 
 @media (max-width: 700px) {
@@ -173,9 +266,18 @@ main {
     gap: 1rem;
   }
 
-  .hero h1 {
-    font-size: 2.5rem;
-    max-width: none;
+  .feature {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 3.5rem 0;
+  }
+
+  .feature--flip .feature-media {
+    order: 0;
+  }
+
+  .scroll-hint {
+    left: 2rem;
   }
 }
 
@@ -191,7 +293,7 @@ main {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: var(--color-ink);
+    background-color: var(--color-paper);
     mix-blend-mode: difference;
     pointer-events: none;
     z-index: 9999;
@@ -232,7 +334,7 @@ main {
   display: block;
   width: 100%;
   height: 2px;
-  background-color: var(--color-ink);
+  background-color: var(--color-paper);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -247,7 +349,7 @@ main {
     right: 0;
     height: 100vh;
     width: 70%;
-    background-color: var(--color-paper);
+    background-color: var(--color-ink);
     transform: translateX(100%);
     transition: transform 0.4s ease;
     display: flex;
@@ -356,9 +458,9 @@ label {
 input, textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--color-ink);
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  border: 1px solid var(--color-paper);
+  background-color: transparent;
+  color: var(--color-paper);
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
 }
@@ -370,8 +472,8 @@ textarea {
 button[type="submit"] {
   align-self: flex-start;
   padding: 0.9rem 2.5rem;
-  background-color: var(--color-ink);
-  color: var(--color-paper);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
   border: none;
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
@@ -395,10 +497,11 @@ button[type="submit"]:hover {
 }
 
 .cycle-subcopy {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-style: italic;
-  margin-bottom: 2rem;
   min-height: 1.5em;
+  color: var(--color-paper);
+  opacity: 0.85;
 }
 
 #preloader {
@@ -425,9 +528,20 @@ button[type="submit"]:hover {
 }
 
 .event-hero {
-  border-bottom: 1px solid var(--color-ink);
+  position: relative;
   padding-bottom: 3rem;
   margin-bottom: 3rem;
+}
+
+.event-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-paper);
+  opacity: 0.35;
 }
 
 .event-image {
@@ -452,7 +566,6 @@ button[type="submit"]:hover {
 .marquee {
   overflow: hidden;
   padding: 3rem 0;
-  border-top: 1px solid var(--color-ink);
 }
 
 .marquee-track {
