@@ -1,3 +1,11 @@
+new Lenis({
+  autoRaf: true,
+  autoToggle: true,
+  anchors: true,
+  allowNestedScroll: true,
+  naiveDimensions: true,
+  stopInertiaOnNavigate: true
+});
 const cursor = document.createElement('div');
 cursor.id = 'cursor';
 document.body.appendChild(cursor);
