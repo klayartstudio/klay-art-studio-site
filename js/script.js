@@ -1,4 +1,4 @@
-new Lenis({
+const lenis = new Lenis({
   autoRaf: true,
   autoToggle: true,
   anchors: true,
@@ -112,3 +112,45 @@ if (canHover) {
   }, { threshold: 0.6 });
   slideshows.forEach(el => showObserver.observe(el));
 }
+
+const pieceField = document.getElementById('piece');
+
+if (pieceField) {
+  const requested = new URLSearchParams(window.location.search).get('piece');
+  if (requested) {
+    pieceField.value = requested;
+  }
+}
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let idleTimer;
+let drifting = false;
+
+function startDrift() {
+  if (reduceMotion) return;
+  const remaining = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+  if (remaining < 60) return;
+  drifting = true;
+  lenis.scrollTo(document.documentElement.scrollHeight, {
+    duration: remaining / 20,
+    easing: (t) => t
+  });
+}
+
+function stopDrift() {
+  if (!drifting) return;
+  lenis.scrollTo(window.scrollY, { immediate: true });
+  drifting = false;
+}
+
+function resetIdle() {
+  stopDrift();
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(startDrift, 12000);
+}
+
+['wheel', 'touchstart', 'keydown', 'mousedown', 'mousemove'].forEach(evt => {
+  window.addEventListener(evt, resetIdle, { passive: true });
+});
+
+resetIdle();

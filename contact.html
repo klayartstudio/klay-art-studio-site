@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
 </head>
 <body>
-
     <div id="preloader"><span>Klay Art Studio</span></div>
+
     <header>
         <a href="/" class="logo">Klay Art Studio</a>
         <button id="menu-toggle" aria-label="Toggle menu">
@@ -32,7 +32,7 @@
     </header>
 
     <main>
-        <section class="hero reveal">
+        <section class="event-hero reveal">
             <span class="eyebrow">Begin Here</span>
             <h1>Contact</h1>
             <p>Klay Art Studio can be reached directly by phone, by email, or by message. For private events, commissions, or keepsake orders, WhatsApp is usually the fastest way to begin.</p>
@@ -55,6 +55,11 @@
             </div>
 
             <div>
+                <label for="piece">Piece of interest, if any</label>
+                <input type="text" id="piece" name="piece" placeholder="Leave blank for general enquiries">
+            </div>
+
+            <div>
                 <label for="message">Message</label>
                 <textarea id="message" name="message" rows="5" required></textarea>
             </div>
@@ -67,6 +72,7 @@
         <p>Klay Art Studio · Gulshan, Dhaka 1212</p>
         <p>WhatsApp: +880 1717-882222 · klayartstudio@gmail.com</p>
     </footer>
+
     <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
     <script src="js/script.js"></script>
 </body>

@@ -601,3 +601,32 @@ button[type="submit"]:hover {
     transform: translateX(-50%);
   }
 }
+
+.gallery-item.sold img {
+  opacity: 0.45;
+}
+
+.status {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid currentColor;
+  margin-bottom: 0.75rem;
+}
+
+.status--sold {
+  opacity: 0.6;
+}
+
+.status--available {
+  opacity: 0.85;
+}
+
+.price {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
