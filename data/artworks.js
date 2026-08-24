@@ -11,6 +11,30 @@
 
 const ARTWORKS = {
 
+  // ---------- FEATURED ON THE HOMEPAGE ----------
+  featured: [
+    {
+      title: "Complexity Series, No. 1",
+      details: "Faisal Md. Mahfuz · Watercolour on paper, 40 × 20 cm",
+      price: "",
+      status: "available",
+      images: [
+        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+1+View+A",
+        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+1+View+B"
+      ]
+    },
+    {
+      title: "Shampan Series, No. 1",
+      details: "Mrs Faisal · Watercolour on paper, 50 × 38 cm",
+      price: "",
+      status: "available",
+      images: [
+        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+1+View+A",
+        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+1+View+B"
+      ]
+    }
+  ],
+
   // ---------- COMPLEXITY SERIES (Faisal Md. Mahfuz) ----------
   complexity: [
     {

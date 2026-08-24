@@ -630,3 +630,61 @@ button[type="submit"]:hover {
   opacity: 0.9;
   margin-bottom: 0.5rem;
 }
+
+.media-link {
+  display: block;
+  overflow: hidden;
+}
+
+.feature-media a {
+  display: block;
+  overflow: hidden;
+}
+
+.marquee-track a {
+  display: block;
+}
+
+.marquee-item {
+  position: relative;
+  margin-right: 1.5rem;
+}
+
+.marquee-item img {
+  margin-right: 0;
+}
+
+.marquee-caption {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-top: 0.6rem;
+}
+
+.selected {
+  padding: 5rem 0;
+  position: relative;
+}
+
+.selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-paper);
+  opacity: 0.35;
+}
+
+.selected h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.selected .lead {
+  opacity: 0.75;
+  margin-bottom: 2rem;
+  max-width: 55ch;
+}
