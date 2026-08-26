@@ -398,52 +398,61 @@ main {
 
 .route {
   position: relative;
-  padding: 2rem 0 4rem;
+  height: 500vh;
 }
 
-.route-svg {
+.route-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  display: block;
+  overflow: hidden;
+}
+
+.route-progress {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
+  top: 4.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 0.6rem;
+  z-index: 3;
 }
 
-.route-bed {
-  fill: none;
-  stroke: var(--color-paper);
-  stroke-opacity: 0.15;
-  stroke-width: 2;
+.route-tick {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-paper);
+  opacity: 0.15;
+  transition: opacity 0.6s ease;
 }
 
-.route-flow {
-  fill: none;
-  stroke: var(--color-paper);
-  stroke-width: 2;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+.route-tick.done {
+  opacity: 0.85;
 }
 
 .stop {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+  gap: 4rem;
   align-items: center;
-  padding: 4rem 0;
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+  transition: opacity 0.7s ease, visibility 0.7s;
 }
 
-.stop.visible {
+.stop.current {
   opacity: 1;
-  transform: translateY(0);
+  visibility: visible;
 }
 
-.stop:nth-child(even) .stop-media {
+.stop:nth-child(odd) .stop-media {
   order: -1;
 }
 
@@ -453,49 +462,39 @@ main {
 
 .stop-media img {
   width: 100%;
+  max-height: 56vh;
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
 .stop-badge {
   position: absolute;
-  top: -18px;
-  left: -18px;
-  width: 56px;
-  height: 56px;
+  top: 1rem;
+  left: 1rem;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background-color: var(--color-ink);
-  border: 2px solid rgba(245, 241, 234, 0.3);
-  color: var(--color-paper);
+  background-color: var(--color-paper);
+  border: none;
+  color: var(--color-ink);
   font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.7s ease, color 0.7s ease, border-color 0.7s ease, transform 0.7s ease;
+  z-index: 2;
+  transition: box-shadow 0.7s ease, transform 0.7s ease;
 }
 
-.stop:nth-child(even) .stop-badge {
-  left: auto;
-  right: -18px;
-}
-
-.stop.visible .stop-badge {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
-  border-color: var(--color-paper);
-  transform: scale(1.08);
-}
-
-.stop:last-child.visible .stop-badge {
-  box-shadow: 0 0 26px 8px rgba(245, 241, 234, 0.45);
+.stop:last-of-type.current .stop-badge {
+  box-shadow: 0 0 30px 10px rgba(245, 241, 234, 0.45);
   animation: badgeArrive 1.3s ease-out;
 }
 
 @keyframes badgeArrive {
-  0% { transform: scale(1.08); }
-  45% { transform: scale(1.45); }
-  100% { transform: scale(1.08); }
+  0% { transform: scale(1); }
+  45% { transform: scale(1.4); }
+  100% { transform: scale(1); }
 }
 
 .stop-label {
@@ -509,7 +508,7 @@ main {
 
 .stop h3 {
   font-family: 'Playfair Display', serif;
-  font-size: 1.9rem;
+  font-size: 2.2rem;
   margin-bottom: 1rem;
 }
 
@@ -751,31 +750,54 @@ button[type="submit"]:hover {
 }
 
 @media (max-width: 900px) {
-  .route-svg {
+  .route {
+    height: auto;
+  }
+
+  .route-pin {
+    position: static;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .route-progress {
     display: none;
   }
 
   .stop {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 2.5rem 0;
+    opacity: 0;
+    visibility: visible;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .stop:nth-child(even) .stop-media {
+  .stop.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stop:nth-child(odd) .stop-media {
     order: 0;
   }
 
-  .stop-badge {
-    top: -14px;
-    left: -14px;
-    width: 46px;
-    height: 46px;
-    font-size: 1rem;
+  .stop-media img {
+    max-height: none;
   }
 
-  .stop:nth-child(even) .stop-badge {
-    left: -14px;
-    right: auto;
+  .stop-badge {
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
   }
 
   .stop h3 {

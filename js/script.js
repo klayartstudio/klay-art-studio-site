@@ -154,63 +154,16 @@ if (pieceField) {
   if (requested) pieceField.value = requested;
 }
 
-// ---------- Keepsake route ----------
+// ---------- Keepsake pinned journey ----------
 const route = document.querySelector('.route');
 
 if (route) {
-  const svg = document.getElementById('route-svg');
-  const bed = document.getElementById('route-bed');
-  const flow = document.getElementById('route-flow');
   const stops = route.querySelectorAll('.stop');
-  let lengths = [];
-  let total = 0;
-  let reached = -1;
+  const ticks = route.querySelectorAll('.route-tick');
+  const pinned = window.matchMedia('(min-width: 901px)').matches;
+  let shown = -1;
 
-  function drawRoute() {
-    const box = route.getBoundingClientRect();
-    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
-
-    const centres = [...stops].map(stop => {
-      const badge = stop.querySelector('.stop-badge').getBoundingClientRect();
-      return {
-        x: badge.left + badge.width / 2 - box.left,
-        y: badge.top + badge.height / 2 - box.top
-      };
-    });
-
-    let d = `M${centres[0].x},${centres[0].y}`;
-    for (let i = 1; i < centres.length; i++) {
-      const a = centres[i - 1];
-      const b = centres[i];
-      const midY = (a.y + b.y) / 2;
-      d += ` C${a.x},${midY} ${b.x},${midY} ${b.x},${b.y}`;
-    }
-
-    bed.setAttribute('d', d);
-    flow.setAttribute('d', d);
-
-    total = flow.getTotalLength();
-    flow.style.strokeDasharray = total;
-
-    lengths = [];
-    for (const c of centres) {
-      let best = 0;
-      let bestDist = Infinity;
-      for (let l = 0; l <= total; l += total / 300) {
-        const p = flow.getPointAtLength(l);
-        const dist = (p.x - c.x) ** 2 + (p.y - c.y) ** 2;
-        if (dist < bestDist) {
-          bestDist = dist;
-          best = l;
-        }
-      }
-      lengths.push(best);
-    }
-
-    flow.style.strokeDashoffset = reached < 0 ? total : total - lengths[reached];
-  }
-
-  function burst() {
+  function celebrate() {
     const badge = stops[stops.length - 1].querySelector('.stop-badge').getBoundingClientRect();
     const cx = badge.left + badge.width / 2;
     const cy = badge.top + badge.height / 2;
@@ -238,25 +191,35 @@ if (route) {
     }
   }
 
-  const routeObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('visible');
+  if (pinned) {
+    const updatePinned = () => {
+      const box = route.getBoundingClientRect();
+      const travel = route.offsetHeight - window.innerHeight;
+      const progress = Math.max(0, Math.min(-box.top / travel, 1));
+      const index = Math.min(Math.floor(progress * stops.length), stops.length - 1);
 
-      const i = Number(entry.target.dataset.stop);
-      if (i <= reached) return;
-      reached = i;
-      flow.style.strokeDashoffset = total - lengths[i];
+      if (index === shown) return;
+      shown = index;
 
-      if (i === stops.length - 1) setTimeout(burst, 800);
-    });
-  }, { threshold: 0.45 });
+      stops.forEach((s, n) => s.classList.toggle('current', n === index));
+      ticks.forEach((t, n) => t.classList.toggle('done', n <= index));
 
-  stops.forEach(stop => routeObserver.observe(stop));
+      if (index === stops.length - 1) setTimeout(celebrate, 500);
+    };
 
-  window.addEventListener('load', drawRoute);
-  window.addEventListener('resize', drawRoute);
-  drawRoute();
+    window.addEventListener('scroll', updatePinned, { passive: true });
+    updatePinned();
+  } else {
+    const mobileObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        if (entry.target === stops[stops.length - 1]) setTimeout(celebrate, 500);
+      });
+    }, { threshold: 0.4 });
+
+    stops.forEach(stop => mobileObserver.observe(stop));
+  }
 }
 
 // ---------- Draggable marquee ----------
@@ -333,11 +296,12 @@ if (track) {
 
 // ---------- Idle auto-scroll ----------
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasPinnedSection = !!document.querySelector('.route');
 let idleTimer;
 let drifting = false;
 
 function startDrift() {
-  if (reduceMotion) return;
+  if (reduceMotion || hasPinnedSection) return;
   const remaining = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
   if (remaining < 60) return;
   drifting = true;
