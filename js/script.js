@@ -1,3 +1,8 @@
+// ============================================================
+// KLAY ART STUDIO
+// ============================================================
+
+// ---------- Smooth scrolling ----------
 const lenis = new Lenis({
   autoRaf: true,
   autoToggle: true,
@@ -6,6 +11,9 @@ const lenis = new Lenis({
   naiveDimensions: true,
   stopInertiaOnNavigate: true
 });
+
+// ---------- Custom cursor (desktop only) ----------
+const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 const cursor = document.createElement('div');
 cursor.id = 'cursor';
@@ -16,32 +24,58 @@ document.addEventListener('mousemove', (e) => {
   cursor.style.top = e.clientY + 'px';
 });
 
-const links = document.querySelectorAll('a');
-links.forEach(link => {
+document.querySelectorAll('a').forEach(link => {
   link.addEventListener('mouseenter', () => cursor.classList.add('cursor-link'));
   link.addEventListener('mouseleave', () => cursor.classList.remove('cursor-link'));
 });
 
-const revealElements = document.querySelectorAll('.reveal');
-
-const observer = new IntersectionObserver((entries) => {
+// ---------- Reveal on scroll ----------
+const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+    if (entry.isIntersecting) entry.target.classList.add('visible');
   });
 }, { threshold: 0.15 });
 
-revealElements.forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
+// ---------- Mobile navigation ----------
 const menuToggle = document.getElementById('menu-toggle');
 const nav = document.querySelector('nav');
 
+const scrim = document.createElement('div');
+scrim.id = 'nav-scrim';
+document.body.appendChild(scrim);
+
+function openNav() {
+  menuToggle.classList.add('open');
+  nav.classList.add('open');
+  scrim.classList.add('open');
+  document.body.classList.add('nav-open');
+}
+
+function closeNav() {
+  menuToggle.classList.remove('open');
+  nav.classList.remove('open');
+  scrim.classList.remove('open');
+  document.body.classList.remove('nav-open');
+}
+
 menuToggle.addEventListener('click', () => {
-  menuToggle.classList.toggle('open');
-  nav.classList.toggle('open');
+  if (nav.classList.contains('open')) closeNav();
+  else openNav();
 });
 
+scrim.addEventListener('click', closeNav);
+
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', closeNav);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeNav();
+});
+
+// ---------- Homepage cycling headline ----------
 const words = [
   { word: 'Imagination', sub: 'Where hands shape what a photograph cannot hold.' },
   { word: 'Memory', sub: 'A print taken in clay outlasts the moment it was made from.' },
@@ -50,11 +84,11 @@ const words = [
   { word: 'Story', sub: 'Every piece leaves the studio already halfway to being remembered.' }
 ];
 
-let wordIndex = 0;
 const cycleWord = document.getElementById('cycle-word');
 const cycleSubcopy = document.getElementById('cycle-subcopy');
 
 if (cycleWord) {
+  let wordIndex = 0;
   setInterval(() => {
     cycleWord.classList.add('fade-out');
     setTimeout(() => {
@@ -66,18 +100,19 @@ if (cycleWord) {
   }, 3200);
 }
 
+// ---------- Preloader ----------
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
-  setTimeout(() => {
-    preloader.classList.add('hidden');
-  }, 400);
+  setTimeout(() => preloader.classList.add('hidden'), 400);
 });
 
+// ---------- Image slideshows on cards ----------
 const slideshows = document.querySelectorAll('[data-images]');
 
 function startShow(el) {
   if (el.dataset.playing) return;
   const imgs = el.dataset.images.split(',');
+  if (imgs.length < 2) return;
   const img = el.querySelector('img');
   let i = 0;
   el.dataset.playing = 'true';
@@ -96,8 +131,6 @@ function stopShow(el) {
   el.querySelector('img').src = imgs[0].trim();
 }
 
-const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
 if (canHover) {
   slideshows.forEach(el => {
     el.addEventListener('mouseenter', () => startShow(el));
@@ -113,15 +146,192 @@ if (canHover) {
   slideshows.forEach(el => showObserver.observe(el));
 }
 
+// ---------- Contact form: prefill the piece being enquired about ----------
 const pieceField = document.getElementById('piece');
 
 if (pieceField) {
   const requested = new URLSearchParams(window.location.search).get('piece');
-  if (requested) {
-    pieceField.value = requested;
-  }
+  if (requested) pieceField.value = requested;
 }
 
+// ---------- Keepsake route ----------
+const route = document.querySelector('.route');
+
+if (route) {
+  const svg = document.getElementById('route-svg');
+  const bed = document.getElementById('route-bed');
+  const flow = document.getElementById('route-flow');
+  const stops = route.querySelectorAll('.stop');
+  let lengths = [];
+  let total = 0;
+  let reached = -1;
+
+  function drawRoute() {
+    const box = route.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+
+    const centres = [...stops].map(stop => {
+      const badge = stop.querySelector('.stop-badge').getBoundingClientRect();
+      return {
+        x: badge.left + badge.width / 2 - box.left,
+        y: badge.top + badge.height / 2 - box.top
+      };
+    });
+
+    let d = `M${centres[0].x},${centres[0].y}`;
+    for (let i = 1; i < centres.length; i++) {
+      const a = centres[i - 1];
+      const b = centres[i];
+      const midY = (a.y + b.y) / 2;
+      d += ` C${a.x},${midY} ${b.x},${midY} ${b.x},${b.y}`;
+    }
+
+    bed.setAttribute('d', d);
+    flow.setAttribute('d', d);
+
+    total = flow.getTotalLength();
+    flow.style.strokeDasharray = total;
+
+    lengths = [];
+    for (const c of centres) {
+      let best = 0;
+      let bestDist = Infinity;
+      for (let l = 0; l <= total; l += total / 300) {
+        const p = flow.getPointAtLength(l);
+        const dist = (p.x - c.x) ** 2 + (p.y - c.y) ** 2;
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = l;
+        }
+      }
+      lengths.push(best);
+    }
+
+    flow.style.strokeDashoffset = reached < 0 ? total : total - lengths[reached];
+  }
+
+  function burst() {
+    const badge = stops[stops.length - 1].querySelector('.stop-badge').getBoundingClientRect();
+    const cx = badge.left + badge.width / 2;
+    const cy = badge.top + badge.height / 2;
+
+    for (let i = 0; i < 28; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'spark';
+      dot.style.left = cx + 'px';
+      dot.style.top = cy + 'px';
+      document.body.appendChild(dot);
+
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 70 + Math.random() * 150;
+
+      dot.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        {
+          transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+          opacity: 0
+        }
+      ], {
+        duration: 900 + Math.random() * 700,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+      }).onfinish = () => dot.remove();
+    }
+  }
+
+  const routeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+
+      const i = Number(entry.target.dataset.stop);
+      if (i <= reached) return;
+      reached = i;
+      flow.style.strokeDashoffset = total - lengths[i];
+
+      if (i === stops.length - 1) setTimeout(burst, 800);
+    });
+  }, { threshold: 0.45 });
+
+  stops.forEach(stop => routeObserver.observe(stop));
+
+  window.addEventListener('load', drawRoute);
+  window.addEventListener('resize', drawRoute);
+  drawRoute();
+}
+
+// ---------- Draggable marquee ----------
+const track = document.querySelector('.marquee-track');
+
+if (track) {
+  const width = track.scrollWidth / 2;
+  const drift = -0.45;
+  let offset = 0;
+  let velocity = 0;
+  let dragging = false;
+  let hovering = false;
+  let lastX = 0;
+  let startX = 0;
+
+  function tick() {
+    if (!dragging) {
+      if (Math.abs(velocity) > 0.05) {
+        offset += velocity;
+        velocity *= 0.95;
+      } else if (!hovering) {
+        offset += drift;
+      }
+    }
+
+    if (offset <= -width) offset += width;
+    if (offset > 0) offset -= width;
+
+    track.style.transform = `translateX(${offset}px)`;
+    requestAnimationFrame(tick);
+  }
+
+  function grab(x) {
+    dragging = true;
+    velocity = 0;
+    startX = x;
+    lastX = x;
+    track.classList.add('dragging');
+  }
+
+  function move(x) {
+    if (!dragging) return;
+    const delta = x - lastX;
+    offset += delta;
+    velocity = delta;
+    lastX = x;
+  }
+
+  function release() {
+    if (!dragging) return;
+    dragging = false;
+    track.classList.remove('dragging');
+  }
+
+  track.addEventListener('mouseenter', () => { hovering = true; });
+  track.addEventListener('mouseleave', () => { hovering = false; release(); });
+
+  track.addEventListener('mousedown', (e) => { e.preventDefault(); grab(e.clientX); });
+  window.addEventListener('mousemove', (e) => move(e.clientX));
+  window.addEventListener('mouseup', release);
+
+  track.addEventListener('touchstart', (e) => grab(e.touches[0].clientX), { passive: true });
+  track.addEventListener('touchmove', (e) => move(e.touches[0].clientX), { passive: true });
+  track.addEventListener('touchend', release);
+
+  track.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (Math.abs(lastX - startX) > 5) e.preventDefault();
+    });
+  });
+
+  tick();
+}
+
+// ---------- Idle auto-scroll ----------
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let idleTimer;
 let drifting = false;
