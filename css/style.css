@@ -246,10 +246,14 @@ main {
 
 .feature-media img {
   width: 100%;
+  height: auto;
+  display: block;
+}
+
+.feature-media--boxed img {
   aspect-ratio: 3 / 4;
   object-fit: contain;
-  background-color: #000;
-  display: block;
+  background-color: var(--color-ink);
 }
 
 .feature-media a {
@@ -355,11 +359,15 @@ main {
 
 .gallery img {
   width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: contain;
-  background-color: #000;
+  height: auto;
   display: block;
   margin-bottom: 1rem;
+}
+
+.gallery--boxed img {
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background-color: var(--color-ink);
 }
 
 .media-link {
