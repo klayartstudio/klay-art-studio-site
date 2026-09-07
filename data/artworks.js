@@ -20,8 +20,8 @@ const ARTWORKS = {
       status: "available",
       seriesLink: "complexity-series.html",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+1+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+1+View+B"
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+1+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+1+View+B"
       ]
     },
     {
@@ -45,9 +45,9 @@ const ARTWORKS = {
       price: "",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+1+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+1+View+B",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+1+View+C"
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+1+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+1+View+B",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+1+View+C"
       ]
     },
     {
@@ -56,8 +56,8 @@ const ARTWORKS = {
       price: "",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+2+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+2+View+B"
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+2+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+2+View+B"
       ]
     },
     {
@@ -66,8 +66,8 @@ const ARTWORKS = {
       price: "",
       status: "sold",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+3+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+3+View+B"
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+3+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+3+View+B"
       ]
     },
     {
@@ -76,8 +76,8 @@ const ARTWORKS = {
       price: "",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+4+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+4+View+B"
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+4+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+4+View+B"
       ]
     }
   ],
@@ -90,9 +90,9 @@ const ARTWORKS = {
       price: "1000 BDT",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=DAHUK+I+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=DAHUK+I+View+B",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=DAHUK+I+Framed"
+        "https://placehold.co/600x450/000000/f5f1ea?text=DAHUK+I+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=DAHUK+I+View+B",
+        "https://placehold.co/600x450/000000/f5f1ea?text=DAHUK+I+Framed"
       ]
     },
     {
@@ -101,8 +101,8 @@ const ARTWORKS = {
       price: "1000 BDT",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=DAHUK+II+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=DAHUK+II+View+B"
+        "https://placehold.co/600x450/000000/f5f1ea?text=DAHUK+II+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=DAHUK+II+View+B"
       ]
     },
     {
@@ -111,8 +111,8 @@ const ARTWORKS = {
       price: "Price on request",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Ceramic+Plate+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Ceramic+Plate+View+B"
+        "https://placehold.co/600x450/000000/f5f1ea?text=Ceramic+Plate+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Ceramic+Plate+View+B"
       ]
     },
     {
@@ -121,8 +121,8 @@ const ARTWORKS = {
       price: "Price on request",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Showpiece+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Showpiece+View+B"
+        "https://placehold.co/600x450/000000/f5f1ea?text=Showpiece+View+A",
+        "https://placehold.co/600x450/000000/f5f1ea?text=Showpiece+View+B"
       ]
     }
   ]

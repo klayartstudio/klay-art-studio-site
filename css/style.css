@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap');
 
 :root {
-  --color-ink: #1b1a17;
+  --color-ink: #000000;
   --color-paper: #f5f1ea;
 }
 
@@ -14,7 +14,6 @@
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--color-ink);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   color: var(--color-paper);
   line-height: 1.6;
 }
