@@ -24,13 +24,13 @@ const ARTWORKS = {
       ]
     },
     {
-      title: "Shampan Series, No. 1",
-      details: "Mrs Faisal · Watercolour on paper, 50 × 38 cm",
+      title: "Rhythms of Tradition",
+      details: "Rumana Rahman · Acrylic, 76 × 60 cm",
       price: "",
       status: "available",
       images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+1+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+1+View+B"
+        "images/rumana/rhythms-of-tradition/rt-02.jpg",
+        "images/rumana/rhythms-of-tradition/rt-09.jpg"
       ]
     }
   ],
@@ -76,51 +76,6 @@ const ARTWORKS = {
       images: [
         "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+4+View+A",
         "https://placehold.co/600x450/1b1a17/f5f1ea?text=Complexity+4+View+B"
-      ]
-    }
-  ],
-
-  // ---------- SHAMPAN SERIES (Mrs Faisal) ----------
-  shampan: [
-    {
-      title: "Shampan Series, No. 1",
-      details: "Watercolour on paper, 50 × 38 cm",
-      price: "",
-      status: "available",
-      images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+1+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+1+View+B",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+1+View+C"
-      ]
-    },
-    {
-      title: "Shampan Series, No. 2",
-      details: "Watercolour on paper, 50 × 38 cm",
-      price: "",
-      status: "sold",
-      images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+2+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+2+View+B"
-      ]
-    },
-    {
-      title: "Shampan Series, No. 3",
-      details: "Watercolour on paper, 50 × 38 cm",
-      price: "",
-      status: "available",
-      images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+3+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+3+View+B"
-      ]
-    },
-    {
-      title: "Shampan Series, No. 4",
-      details: "Watercolour on paper, 50 × 38 cm",
-      price: "",
-      status: "available",
-      images: [
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+4+View+A",
-        "https://placehold.co/600x450/1b1a17/f5f1ea?text=Shampan+4+View+B"
       ]
     }
   ],

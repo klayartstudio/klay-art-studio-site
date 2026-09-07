@@ -43,6 +43,13 @@ header {
   font-family: 'Playfair Display', serif;
   font-size: 1.25rem;
   letter-spacing: 0.05em;
+  display: block;
+}
+
+.logo-img {
+  height: 42px;
+  width: auto;
+  display: block;
 }
 
 nav ul {
@@ -239,8 +246,8 @@ main {
 
 .feature-media img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: auto;
+  display: block;
 }
 
 .feature-media a {
@@ -341,12 +348,13 @@ main {
   grid-template-columns: repeat(2, 1fr);
   gap: 2.5rem;
   margin-top: 2rem;
+  align-items: start;
 }
 
 .gallery img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: auto;
+  display: block;
   margin-bottom: 1rem;
 }
 
@@ -529,8 +537,8 @@ main {
 
 .event-image {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  height: auto;
+  display: block;
   margin-bottom: 3rem;
 }
 
