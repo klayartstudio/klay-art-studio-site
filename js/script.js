@@ -101,10 +101,30 @@ if (cycleWord) {
 }
 
 // ---------- Preloader ----------
-window.addEventListener('load', () => {
+// Hides as soon as the page's own markup is ready, rather than waiting for
+// every image on the page to finish downloading (which, on a slow mobile
+// connection with a gallery of large photos, could otherwise leave the
+// preloader stuck on screen for a long time). A hard timeout is also set
+// as a safety net so it can never hang indefinitely.
+(() => {
   const preloader = document.getElementById('preloader');
-  setTimeout(() => preloader.classList.add('hidden'), 400);
-});
+  if (!preloader) return;
+
+  let hidden = false;
+  function hidePreloader() {
+    if (hidden) return;
+    hidden = true;
+    preloader.classList.add('hidden');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(hidePreloader, 300));
+  } else {
+    setTimeout(hidePreloader, 300);
+  }
+
+  setTimeout(hidePreloader, 2000);
+})();
 
 // ---------- Image slideshows on cards ----------
 const slideshows = document.querySelectorAll('[data-images]');
