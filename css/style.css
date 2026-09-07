@@ -246,7 +246,9 @@ main {
 
 .feature-media img {
   width: 100%;
-  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background-color: #000;
   display: block;
 }
 
@@ -353,7 +355,9 @@ main {
 
 .gallery img {
   width: 100%;
-  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background-color: #000;
   display: block;
   margin-bottom: 1rem;
 }

@@ -5,13 +5,14 @@ document.querySelectorAll('[data-collection]').forEach(container => {
   container.innerHTML = items.map(item => {
     const sold = item.status === 'sold';
     const priceLine = item.price ? `<p class="price">${item.price}</p>` : '';
-    const link = `contact.html?piece=${encodeURIComponent(item.title)}`;
+    const enquireLink = `contact.html?piece=${encodeURIComponent(item.title)}`;
+    const imageLink = item.seriesLink || (sold ? null : enquireLink);
 
-    const media = sold
-      ? `<img src="${item.images[0]}" alt="${item.title}">`
-      : `<a class="media-link" href="${link}"><img src="${item.images[0]}" alt="${item.title}"></a>`;
+    const media = imageLink
+      ? `<a class="media-link" href="${imageLink}"><img src="${item.images[0]}" alt="${item.title}"></a>`
+      : `<img src="${item.images[0]}" alt="${item.title}">`;
 
-    const enquire = sold ? '' : `<a href="${link}">Enquire about this piece</a>`;
+    const enquire = sold ? '' : `<a href="${enquireLink}">Enquire about this piece</a>`;
 
     return `
       <div class="gallery-item reveal${sold ? ' sold' : ''}" data-images="${item.images.join(',')}">
