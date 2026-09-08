@@ -5,7 +5,7 @@ document.querySelectorAll('[data-collection]').forEach(container => {
   container.innerHTML = items.map(item => {
     const sold = item.status === 'sold';
     const priceLine = item.price ? `<p class="price">${item.price}</p>` : '';
-    const enquireLink = `contact.html?piece=${encodeURIComponent(item.title)}`;
+    const enquireLink = `contact?piece=${encodeURIComponent(item.title)}`;
     const imageLink = item.seriesLink || (sold ? null : enquireLink);
 
     const media = imageLink

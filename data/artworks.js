@@ -18,7 +18,7 @@ const ARTWORKS = {
       details: "Faisal Md. Mahfuz · Watercolour on paper, 40 × 20 cm",
       price: "",
       status: "available",
-      seriesLink: "complexity-series.html",
+      seriesLink: "complexity-series",
       images: [
         "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+1+View+A",
         "https://placehold.co/600x450/000000/f5f1ea?text=Complexity+1+View+B"
@@ -29,7 +29,7 @@ const ARTWORKS = {
       details: "Rumana Rahman · Acrylic, 76 × 60 cm",
       price: "",
       status: "available",
-      seriesLink: "rhythms-of-tradition.html",
+      seriesLink: "rhythms-of-tradition",
       images: [
         "images/rumana/rhythms-of-tradition/rt-02.jpg",
         "images/rumana/rhythms-of-tradition/rt-09.jpg"
