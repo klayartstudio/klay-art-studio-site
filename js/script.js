@@ -232,10 +232,20 @@ const route = document.querySelector('.route');
 if (route) {
   const stops = route.querySelectorAll('.stop');
   const ticks = route.querySelectorAll('.route-tick');
-  const pinned = window.matchMedia('(min-width: 901px)').matches;
+  // Re-checked live via a matchMedia listener rather than read once, so
+  // crossing the 901px breakpoint mid-session (resizing the window,
+  // opening/closing a browser extension's side panel, rotating a
+  // tablet) switches modes cleanly instead of leaving the JS running
+  // the wrong logic for the CSS layout that's actually showing.
+  const mql = window.matchMedia('(min-width: 901px)');
   let shown = -1;
+  let celebrated = false;
+  let teardown = null;
 
   function celebrate() {
+    if (celebrated) return;
+    celebrated = true;
+
     const badge = stops[stops.length - 1].querySelector('.stop-badge').getBoundingClientRect();
     const cx = badge.left + badge.width / 2;
     const cy = badge.top + badge.height / 2;
@@ -263,7 +273,14 @@ if (route) {
     }
   }
 
-  if (pinned) {
+  function resetStops() {
+    shown = -1;
+    celebrated = false;
+    stops.forEach(s => s.classList.remove('current', 'visible'));
+    ticks.forEach(t => t.classList.remove('done'));
+  }
+
+  function setupPinned() {
     const updatePinned = () => {
       const box = route.getBoundingClientRect();
       const travel = route.offsetHeight - window.innerHeight;
@@ -281,7 +298,11 @@ if (route) {
 
     window.addEventListener('scroll', updatePinned, { passive: true });
     updatePinned();
-  } else {
+
+    return () => window.removeEventListener('scroll', updatePinned);
+  }
+
+  function setupMobile() {
     const mobileObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -291,7 +312,18 @@ if (route) {
     }, { threshold: 0.4 });
 
     stops.forEach(stop => mobileObserver.observe(stop));
+
+    return () => mobileObserver.disconnect();
   }
+
+  function applyMode(pinned) {
+    if (teardown) teardown();
+    resetStops();
+    teardown = pinned ? setupPinned() : setupMobile();
+  }
+
+  applyMode(mql.matches);
+  mql.addEventListener('change', (e) => applyMode(e.matches));
 }
 
 // ---------- Draggable marquee ----------
