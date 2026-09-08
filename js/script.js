@@ -2,6 +2,51 @@
 // KLAY ART STUDIO
 // ============================================================
 
+// ---------- Cookie consent + analytics ----------
+(function () {
+  const GA_ID = 'G-D7V2GVJXQY';
+  const consent = localStorage.getItem('cookie-consent');
+  const banner = document.getElementById('cookie-consent');
+
+  function loadAnalytics() {
+    if (window.gaLoaded) return;
+    window.gaLoaded = true;
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  if (consent === 'accepted') loadAnalytics();
+
+  if (banner) {
+    if (consent) {
+      banner.remove();
+    } else {
+      banner.classList.add('visible');
+
+      document.getElementById('cookie-accept')?.addEventListener('click', () => {
+        localStorage.setItem('cookie-consent', 'accepted');
+        banner.classList.remove('visible');
+        loadAnalytics();
+      });
+
+      document.getElementById('cookie-decline')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.setItem('cookie-consent', 'declined');
+        banner.classList.remove('visible');
+      });
+    }
+  }
+})();
+
 // ---------- Smooth scrolling ----------
 const lenis = new Lenis({
   autoRaf: true,
@@ -98,6 +143,13 @@ if (cycleWord) {
       cycleWord.classList.remove('fade-out');
     }, 400);
   }, 3200);
+}
+
+// ---------- Offline / repeat-visit caching ----------
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
 }
 
 // ---------- Preloader ----------
