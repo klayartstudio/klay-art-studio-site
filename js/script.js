@@ -89,6 +89,7 @@ if (canHover) {
   document.body.appendChild(magnifier);
 
   let magnifiedImg = null;
+  let lastMagnifyEvent = null;
 
   // For object-fit: contain images (the boxed/letterboxed galleries), the
   // element's own box includes the letterbox padding — mapping the zoom
@@ -112,6 +113,13 @@ if (canHover) {
   }
 
   function positionMagnifier(e, img) {
+    lastMagnifyEvent = e;
+    // Re-set on every call, not just mouseenter: a card's own slideshow
+    // can swap the img's src while the cursor sits still over it, and
+    // this keeps the loupe from freezing on whatever photo was showing
+    // when the cursor first arrived.
+    magnifier.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
+
     const rect = getContentRect(img);
     const xPct = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
     const yPct = Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height));
@@ -127,10 +135,10 @@ if (canHover) {
   }
 
   document.querySelectorAll('img').forEach((img) => {
-    img.addEventListener('mouseenter', () => {
+    img.addEventListener('mouseenter', (e) => {
       if (img.offsetWidth < MIN_MAGNIFY_SIZE || img.offsetHeight < MIN_MAGNIFY_SIZE) return;
       magnifiedImg = img;
-      magnifier.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
+      positionMagnifier(e, img);
       magnifier.classList.add('visible');
       cursor.classList.add('cursor-hidden');
     });
@@ -140,9 +148,16 @@ if (canHover) {
       positionMagnifier(e, img);
     });
 
+    // Catches the slideshow-driven src swap even when the cursor isn't
+    // moving, so the loupe always reflects whichever photo is showing.
+    img.addEventListener('load', () => {
+      if (magnifiedImg === img && lastMagnifyEvent) positionMagnifier(lastMagnifyEvent, img);
+    });
+
     img.addEventListener('mouseleave', () => {
       if (magnifiedImg !== img) return;
       magnifiedImg = null;
+      lastMagnifyEvent = null;
       magnifier.classList.remove('visible');
       cursor.classList.remove('cursor-hidden');
     });
@@ -267,7 +282,7 @@ function startShow(el) {
   el._timer = setInterval(() => {
     i = (i + 1) % imgs.length;
     img.src = imgs[i].trim();
-  }, 900);
+  }, 2200);
 }
 
 function stopShow(el) {
