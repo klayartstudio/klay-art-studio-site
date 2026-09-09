@@ -124,12 +124,11 @@ if (canHover) {
     return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
   }
 
-  function positionMagnifier(img) {
+  function positionMagnifier(img, rect) {
     magnifier.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
 
-    const rect = getContentRect(img);
-    const xPct = Math.min(1, Math.max(0, (lastMouseX - rect.left) / rect.width));
-    const yPct = Math.min(1, Math.max(0, (lastMouseY - rect.top) / rect.height));
+    const xPct = (lastMouseX - rect.left) / rect.width;
+    const yPct = (lastMouseY - rect.top) / rect.height;
     const bgWidth = rect.width * MAGNIFY_ZOOM;
     const bgHeight = rect.height * MAGNIFY_ZOOM;
     const half = magnifier.offsetWidth / 2;
@@ -147,24 +146,50 @@ if (canHover) {
     cursor.classList.remove('cursor-hidden');
   }
 
-  document.querySelectorAll('img').forEach((img) => {
-    img.addEventListener('mouseenter', () => {
-      if (img.offsetWidth < MIN_MAGNIFY_SIZE || img.offsetHeight < MIN_MAGNIFY_SIZE) return;
-      magnifiedImg = img;
-      magnifier.classList.add('visible');
-      cursor.classList.add('cursor-hidden');
-    });
-  });
-
+  // Runs every frame rather than off mouseenter/mousemove alone, so an
+  // image arriving under an already-stationary cursor — during the
+  // site's own idle auto-scroll, or a touchpad scroll via Lenis — gets
+  // picked up too, not just an image the cursor actively moved onto.
   (function tick() {
-    if (magnifiedImg) {
-      const rect = magnifiedImg.getBoundingClientRect();
-      if (isWithin(lastMouseX, lastMouseY, rect)) {
-        positionMagnifier(magnifiedImg);
-      } else {
+    // The whole loop lives inside this try/catch so that a single
+    // unexpected frame (a transient DOM/layout edge case mid-navigation,
+    // say) can never silently kill it for the rest of the visit — the
+    // next requestAnimationFrame is always scheduled regardless.
+    try {
+      let target = magnifiedImg;
+
+      if (!target) {
+        const el = document.elementFromPoint(lastMouseX, lastMouseY);
+        if (el && el.tagName === 'IMG' && el.offsetWidth >= MIN_MAGNIFY_SIZE && el.offsetHeight >= MIN_MAGNIFY_SIZE) {
+          target = el;
+        }
+      }
+
+      if (target) {
+        // The content rect (not the full element box) is what gates
+        // whether to show the loupe at all: for a letterboxed image the
+        // box includes the black padding bars, and the cursor sitting in
+        // that padding isn't over any actual picture, so it shouldn't
+        // magnify anything there.
+        const rect = getContentRect(target);
+
+        if (isWithin(lastMouseX, lastMouseY, rect)) {
+          if (magnifiedImg !== target) {
+            magnifiedImg = target;
+            magnifier.classList.add('visible');
+            cursor.classList.add('cursor-hidden');
+          }
+          positionMagnifier(target, rect);
+        } else if (magnifiedImg) {
+          stopMagnify();
+        }
+      } else if (magnifiedImg) {
         stopMagnify();
       }
+    } catch (err) {
+      /* transient — the next frame retries */
     }
+
     requestAnimationFrame(tick);
   })();
 }
