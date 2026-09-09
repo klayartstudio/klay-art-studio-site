@@ -162,6 +162,26 @@ if (canHover) {
       cursor.classList.remove('cursor-hidden');
     });
   });
+
+  // Scrolling (without moving the mouse) doesn't fire any mouse event,
+  // so the magnifier would otherwise keep showing whatever image was
+  // under the cursor before the page moved. This checks, on scroll,
+  // whether the cursor's last known position is still actually over
+  // the magnified image, and cancels the loupe if it's scrolled away.
+  window.addEventListener('scroll', () => {
+    if (!magnifiedImg || !lastMagnifyEvent) return;
+    const rect = magnifiedImg.getBoundingClientRect();
+    const { clientX, clientY } = lastMagnifyEvent;
+    const stillOver = clientX >= rect.left && clientX <= rect.right
+      && clientY >= rect.top && clientY <= rect.bottom;
+
+    if (!stillOver) {
+      magnifiedImg = null;
+      lastMagnifyEvent = null;
+      magnifier.classList.remove('visible');
+      cursor.classList.remove('cursor-hidden');
+    }
+  }, { passive: true });
 }
 
 // ---------- Reveal on scroll ----------
@@ -237,9 +257,26 @@ if (cycleWord) {
 
 // ---------- Offline / repeat-visit caching ----------
 if ('serviceWorker' in navigator) {
+  // If this page load was already controlled by a service worker, a
+  // later 'controllerchange' means a newer one just took over — reload
+  // once so the page actually picks up the new files immediately,
+  // instead of leaving stale cached CSS/JS in place until the visitor
+  // happens to hard-refresh. Skipped on a visitor's very first-ever
+  // visit, since there's no older version to be stuck on yet.
+  const hadController = !!navigator.serviceWorker.controller;
+
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
+
+  if (hadController) {
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloaded) return;
+      reloaded = true;
+      window.location.reload();
+    });
+  }
 }
 
 // ---------- Preloader ----------
