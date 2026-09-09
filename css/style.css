@@ -858,7 +858,13 @@ button[type="submit"]:hover {
     height: 20px;
     border-radius: 50%;
     background-color: var(--color-paper);
-    mix-blend-mode: difference;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    /* No mix-blend-mode: the site's background is flat pure black now,
+       so a plain light dot already stays visible everywhere without
+       it — and blend-mode difference is what made the cursor look
+       broken/inverted over colourful photos and artwork in the first
+       place (small avatars are below the magnifier's size threshold,
+       so they still show this dot rather than the loupe). */
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
