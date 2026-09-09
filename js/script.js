@@ -69,10 +69,85 @@ document.addEventListener('mousemove', (e) => {
   cursor.style.top = e.clientY + 'px';
 });
 
-document.querySelectorAll('a').forEach(link => {
+document.querySelectorAll('a, button').forEach(link => {
   link.addEventListener('mouseenter', () => cursor.classList.add('cursor-link'));
   link.addEventListener('mouseleave', () => cursor.classList.remove('cursor-link'));
 });
+
+// ---------- Magnifier on content images ----------
+// The dot cursor's mix-blend-mode looks inconsistent over full-colour
+// photos and artwork, so images swap it for a proper magnifying loupe
+// instead — a zoomed circular preview centred on the pointer, so
+// visitors can actually look closer at a detail rather than the cursor
+// just trying (and failing) to stay visible against the image.
+if (canHover) {
+  const MAGNIFY_ZOOM = 2;
+  const MIN_MAGNIFY_SIZE = 120; // skip small avatars/icons
+
+  const magnifier = document.createElement('div');
+  magnifier.id = 'magnifier';
+  document.body.appendChild(magnifier);
+
+  let magnifiedImg = null;
+
+  // For object-fit: contain images (the boxed/letterboxed galleries), the
+  // element's own box includes the letterbox padding — mapping the zoom
+  // to the full box would make the loupe drift away from the artwork the
+  // closer the cursor gets to those padded edges. This finds the actual
+  // rendered content rect within the box so the zoom stays accurate.
+  function getContentRect(img) {
+    const rect = img.getBoundingClientRect();
+    if (getComputedStyle(img).objectFit !== 'contain' || !img.naturalWidth) return rect;
+
+    const scale = Math.min(rect.width / img.naturalWidth, rect.height / img.naturalHeight);
+    const width = img.naturalWidth * scale;
+    const height = img.naturalHeight * scale;
+
+    return {
+      left: rect.left + (rect.width - width) / 2,
+      top: rect.top + (rect.height - height) / 2,
+      width,
+      height
+    };
+  }
+
+  function positionMagnifier(e, img) {
+    const rect = getContentRect(img);
+    const xPct = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+    const yPct = Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height));
+    const bgWidth = rect.width * MAGNIFY_ZOOM;
+    const bgHeight = rect.height * MAGNIFY_ZOOM;
+    const half = magnifier.offsetWidth / 2;
+
+    magnifier.style.left = e.clientX + 'px';
+    magnifier.style.top = e.clientY + 'px';
+    magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
+    magnifier.style.backgroundPosition =
+      `${-(xPct * bgWidth - half)}px ${-(yPct * bgHeight - half)}px`;
+  }
+
+  document.querySelectorAll('img').forEach((img) => {
+    img.addEventListener('mouseenter', () => {
+      if (img.offsetWidth < MIN_MAGNIFY_SIZE || img.offsetHeight < MIN_MAGNIFY_SIZE) return;
+      magnifiedImg = img;
+      magnifier.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
+      magnifier.classList.add('visible');
+      cursor.classList.add('cursor-hidden');
+    });
+
+    img.addEventListener('mousemove', (e) => {
+      if (magnifiedImg !== img) return;
+      positionMagnifier(e, img);
+    });
+
+    img.addEventListener('mouseleave', () => {
+      if (magnifiedImg !== img) return;
+      magnifiedImg = null;
+      magnifier.classList.remove('visible');
+      cursor.classList.remove('cursor-hidden');
+    });
+  });
+}
 
 // ---------- Reveal on scroll ----------
 const revealObserver = new IntersectionObserver((entries) => {
