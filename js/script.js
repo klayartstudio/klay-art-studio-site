@@ -226,6 +226,30 @@ if (pieceField) {
   if (requested) pieceField.value = requested;
 }
 
+// ---------- Contact form: continue to WhatsApp with the filled-in message ----------
+const whatsappBtn = document.getElementById('whatsapp-send');
+
+if (whatsappBtn) {
+  whatsappBtn.addEventListener('click', () => {
+    const name = document.getElementById('name')?.value.trim();
+    const email = document.getElementById('email')?.value.trim();
+    const piece = document.getElementById('piece')?.value.trim();
+    const message = document.getElementById('message')?.value.trim();
+
+    const lines = [];
+    if (name) lines.push(`Name: ${name}`);
+    if (email) lines.push(`Email: ${email}`);
+    if (piece) lines.push(`Piece of interest: ${piece}`);
+    if (message) lines.push(`Message: ${message}`);
+
+    const text = lines.length
+      ? lines.join('\n')
+      : 'Hello, I have a question for Klay Art Studio.';
+
+    window.open(`https://wa.me/8801717882222?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+  });
+}
+
 // ---------- Keepsake pinned journey ----------
 const route = document.querySelector('.route');
 
