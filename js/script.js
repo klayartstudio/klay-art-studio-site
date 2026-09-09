@@ -64,7 +64,12 @@ const cursor = document.createElement('div');
 cursor.id = 'cursor';
 document.body.appendChild(cursor);
 
+let lastMouseX = 0;
+let lastMouseY = 0;
+
 document.addEventListener('mousemove', (e) => {
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
   cursor.style.left = e.clientX + 'px';
   cursor.style.top = e.clientY + 'px';
 });
@@ -80,6 +85,15 @@ document.querySelectorAll('a, button').forEach(link => {
 // instead — a zoomed circular preview centred on the pointer, so
 // visitors can actually look closer at a detail rather than the cursor
 // just trying (and failing) to stay visible against the image.
+//
+// This runs its own requestAnimationFrame loop rather than relying on
+// each image's mouseenter/mousemove/mouseleave, because Lenis drives
+// scrolling (including touchpad scroll) as its own animation rather
+// than native scrolling — it doesn't reliably fire the events an
+// element-based approach would depend on, which is what let the loupe
+// get stuck showing an image the cursor had already scrolled past.
+// Checking cursor-vs-image overlap every frame is correct regardless
+// of what actually moved: the mouse, a touchpad scroll, or Lenis.
 if (canHover) {
   const MAGNIFY_ZOOM = 2;
   const MIN_MAGNIFY_SIZE = 120; // skip small avatars/icons
@@ -89,13 +103,7 @@ if (canHover) {
   document.body.appendChild(magnifier);
 
   let magnifiedImg = null;
-  let lastMagnifyEvent = null;
 
-  // For object-fit: contain images (the boxed/letterboxed galleries), the
-  // element's own box includes the letterbox padding — mapping the zoom
-  // to the full box would make the loupe drift away from the artwork the
-  // closer the cursor gets to those padded edges. This finds the actual
-  // rendered content rect within the box so the zoom stays accurate.
   function getContentRect(img) {
     const rect = img.getBoundingClientRect();
     if (getComputedStyle(img).objectFit !== 'contain' || !img.naturalWidth) return rect;
@@ -112,76 +120,53 @@ if (canHover) {
     };
   }
 
-  function positionMagnifier(e, img) {
-    lastMagnifyEvent = e;
-    // Re-set on every call, not just mouseenter: a card's own slideshow
-    // can swap the img's src while the cursor sits still over it, and
-    // this keeps the loupe from freezing on whatever photo was showing
-    // when the cursor first arrived.
+  function isWithin(x, y, rect) {
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  }
+
+  function positionMagnifier(img) {
     magnifier.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
 
     const rect = getContentRect(img);
-    const xPct = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
-    const yPct = Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height));
+    const xPct = Math.min(1, Math.max(0, (lastMouseX - rect.left) / rect.width));
+    const yPct = Math.min(1, Math.max(0, (lastMouseY - rect.top) / rect.height));
     const bgWidth = rect.width * MAGNIFY_ZOOM;
     const bgHeight = rect.height * MAGNIFY_ZOOM;
     const half = magnifier.offsetWidth / 2;
 
-    magnifier.style.left = e.clientX + 'px';
-    magnifier.style.top = e.clientY + 'px';
+    magnifier.style.left = lastMouseX + 'px';
+    magnifier.style.top = lastMouseY + 'px';
     magnifier.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
     magnifier.style.backgroundPosition =
       `${-(xPct * bgWidth - half)}px ${-(yPct * bgHeight - half)}px`;
   }
 
+  function stopMagnify() {
+    magnifiedImg = null;
+    magnifier.classList.remove('visible');
+    cursor.classList.remove('cursor-hidden');
+  }
+
   document.querySelectorAll('img').forEach((img) => {
-    img.addEventListener('mouseenter', (e) => {
+    img.addEventListener('mouseenter', () => {
       if (img.offsetWidth < MIN_MAGNIFY_SIZE || img.offsetHeight < MIN_MAGNIFY_SIZE) return;
       magnifiedImg = img;
-      positionMagnifier(e, img);
       magnifier.classList.add('visible');
       cursor.classList.add('cursor-hidden');
     });
-
-    img.addEventListener('mousemove', (e) => {
-      if (magnifiedImg !== img) return;
-      positionMagnifier(e, img);
-    });
-
-    // Catches the slideshow-driven src swap even when the cursor isn't
-    // moving, so the loupe always reflects whichever photo is showing.
-    img.addEventListener('load', () => {
-      if (magnifiedImg === img && lastMagnifyEvent) positionMagnifier(lastMagnifyEvent, img);
-    });
-
-    img.addEventListener('mouseleave', () => {
-      if (magnifiedImg !== img) return;
-      magnifiedImg = null;
-      lastMagnifyEvent = null;
-      magnifier.classList.remove('visible');
-      cursor.classList.remove('cursor-hidden');
-    });
   });
 
-  // Scrolling (without moving the mouse) doesn't fire any mouse event,
-  // so the magnifier would otherwise keep showing whatever image was
-  // under the cursor before the page moved. This checks, on scroll,
-  // whether the cursor's last known position is still actually over
-  // the magnified image, and cancels the loupe if it's scrolled away.
-  window.addEventListener('scroll', () => {
-    if (!magnifiedImg || !lastMagnifyEvent) return;
-    const rect = magnifiedImg.getBoundingClientRect();
-    const { clientX, clientY } = lastMagnifyEvent;
-    const stillOver = clientX >= rect.left && clientX <= rect.right
-      && clientY >= rect.top && clientY <= rect.bottom;
-
-    if (!stillOver) {
-      magnifiedImg = null;
-      lastMagnifyEvent = null;
-      magnifier.classList.remove('visible');
-      cursor.classList.remove('cursor-hidden');
+  (function tick() {
+    if (magnifiedImg) {
+      const rect = magnifiedImg.getBoundingClientRect();
+      if (isWithin(lastMouseX, lastMouseY, rect)) {
+        positionMagnifier(magnifiedImg);
+      } else {
+        stopMagnify();
+      }
     }
-  }, { passive: true });
+    requestAnimationFrame(tick);
+  })();
 }
 
 // ---------- Reveal on scroll ----------
