@@ -155,18 +155,25 @@ if (canHover) {
     cursor.classList.remove('cursor-hidden');
   }
 
+  function tryActivate(e, img) {
+    if (magnifiedImg === img) return;
+    if (img.offsetWidth < MIN_MAGNIFY_SIZE || img.offsetHeight < MIN_MAGNIFY_SIZE) return;
+    if (!isWithin(e.clientX, e.clientY, getContentRect(img))) return;
+    magnifiedImg = img;
+    magnifier.classList.add('visible');
+    cursor.classList.add('cursor-hidden');
+  }
+
   document.querySelectorAll('img').forEach((img) => {
-    img.addEventListener('mouseenter', (e) => {
-      if (img.offsetWidth < MIN_MAGNIFY_SIZE || img.offsetHeight < MIN_MAGNIFY_SIZE) return;
-      // Use this event's own coordinates, not the separately-tracked
-      // lastMouseX/Y — a native mouseenter can fire before the mousemove
-      // that would update those, so they may still hold the cursor's
-      // previous position rather than where it just arrived.
-      if (!isWithin(e.clientX, e.clientY, getContentRect(img))) return;
-      magnifiedImg = img;
-      magnifier.classList.add('visible');
-      cursor.classList.add('cursor-hidden');
-    });
+    // mouseenter is the fast path for the common case (arriving
+    // straight into the picture). But for a letterboxed image, entering
+    // through the padding band correctly does nothing here — and since
+    // the pointer is now inside the element, mouseenter won't fire
+    // again. mousemove re-runs the same check on every move within the
+    // element, so crossing from the padding into the actual picture
+    // (without leaving and re-entering the element) still activates it.
+    img.addEventListener('mouseenter', (e) => tryActivate(e, img));
+    img.addEventListener('mousemove', (e) => tryActivate(e, img));
   });
 
   (function tick() {

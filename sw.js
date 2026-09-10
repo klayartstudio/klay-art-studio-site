@@ -5,7 +5,7 @@
 // cached ones.
 // ============================================================
 
-const CACHE_VERSION = 'v10';
+const CACHE_VERSION = 'v11';
 const CACHE_NAME = `klay-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
