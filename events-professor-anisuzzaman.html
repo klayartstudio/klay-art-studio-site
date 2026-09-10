@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <title>An Afternoon with Professor Anisuzzaman | Klay Art Studio</title>
     <meta name="description" content="Professor Anisuzzaman, artist and teacher, spent an afternoon working the wheel at Klay Art Studio, Dhaka.">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap">
     <link rel="icon" type="image/png" href="images/logo/logo-mark.png">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
 </head>
@@ -21,7 +25,7 @@
     </div>
 
     <header>
-        <a href="/" class="logo"><img src="images/logo/logo-full.png" alt="" class="logo-img"><span class="logo-text">Klay Art Studio</span></a>
+        <a href="/" class="logo"><img src="images/logo/logo-full.png" alt="" class="logo-img" width="54" height="42"><span class="logo-text">Klay Art Studio</span></a>
         <button id="menu-toggle" aria-label="Toggle menu">
             <span></span>
             <span></span>
@@ -46,7 +50,7 @@
             <h1>An Afternoon with Professor Anisuzzaman</h1>
         </section>
 
-        <img class="event-image reveal" src="images/wheel-throwing/wheel-05.jpg" alt="Professor Anisuzzaman working at the pottery wheel with Klay Art Studio">
+        <img fetchpriority="high" class="event-image reveal" src="images/wheel-throwing/wheel-05.jpg" alt="Professor Anisuzzaman working at the pottery wheel with Klay Art Studio">
 
         <div class="event-body reveal">
             <p>Professor Anisuzzaman, a teacher and artist with decades behind him, spent an afternoon at Klay Art Studio working the wheel alongside its own hands. There was no lesson plan for the day, only clay, and the kind of conversation that happens naturally when two people who care about the same material are in a room together.</p>
@@ -60,7 +64,7 @@
         <p>Klay Art Studio · Gulshan, Dhaka 1212</p>
         <p>WhatsApp: +880 1717-882222 · contact@klayartstudio.com</p>
     </footer>
-    <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js" defer></script>
+    <script src="js/script.js" defer></script>
 </body>
 </html>

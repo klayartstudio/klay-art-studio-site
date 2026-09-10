@@ -9,8 +9,8 @@ document.querySelectorAll('[data-collection]').forEach(container => {
     const imageLink = item.seriesLink || (sold ? null : enquireLink);
 
     const media = imageLink
-      ? `<a class="media-link" href="${imageLink}"><img src="${item.images[0]}" alt="${item.title}"></a>`
-      : `<img src="${item.images[0]}" alt="${item.title}">`;
+      ? `<a class="media-link" href="${imageLink}"><img src="${item.images[0]}" alt="${item.title}" loading="lazy" decoding="async"></a>`
+      : `<img src="${item.images[0]}" alt="${item.title}" loading="lazy" decoding="async">`;
 
     const enquire = sold ? '' : `<a href="${enquireLink}">Enquire about this piece</a>`;
 

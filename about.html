@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <title>About | Klay Art Studio</title>
     <meta name="description" content="The story of Klay Art Studio, a Dhaka based art and pottery studio working in clay and watercolour.">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap">
     <link rel="icon" type="image/png" href="images/logo/logo-mark.png">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
 </head>
@@ -21,7 +25,7 @@
     </div>
 
     <header>
-        <a href="/" class="logo"><img src="images/logo/logo-full.png" alt="" class="logo-img"><span class="logo-text">Klay Art Studio</span></a>
+        <a href="/" class="logo"><img src="images/logo/logo-full.png" alt="" class="logo-img" width="54" height="42"><span class="logo-text">Klay Art Studio</span></a>
         <button id="menu-toggle" aria-label="Toggle menu">
             <span></span>
             <span></span>
@@ -49,13 +53,13 @@
 
         <div class="gallery gallery--boxed">
             <div class="gallery-item reveal" data-images="images/wheel-throwing/wheel-01.jpg, images/wheel-throwing/wheel-08.jpg, images/wheel-throwing/wheel-15.jpg, images/wheel-throwing/wheel-20.jpg">
-                <img src="images/wheel-throwing/wheel-01.jpg" alt="The artist working at a pottery wheel">
+                <img fetchpriority="high" src="images/wheel-throwing/wheel-01.jpg" alt="The artist working at a pottery wheel">
                 <h3>At the wheel</h3>
                 <p>A live demonstration during a cultural festival</p>
             </div>
 
             <div class="gallery-item reveal" data-images="images/boishakhi-mela/mela-03.jpg, images/boishakhi-mela/mela-10.jpg, images/boishakhi-mela/mela-17.jpg, images/boishakhi-mela/mela-24.jpg">
-                <img src="images/boishakhi-mela/mela-03.jpg" alt="Children learning pottery at an inclusive art workshop">
+                <img loading="lazy" decoding="async" src="images/boishakhi-mela/mela-03.jpg" alt="Children learning pottery at an inclusive art workshop">
                 <h3>A children's workshop</h3>
                 <p>Held in memory of Shilpaguru Safiuddin Ahmed</p>
             </div>
@@ -72,7 +76,7 @@
         <p>WhatsApp: +880 1717-882222 · contact@klayartstudio.com</p>
     </footer>
 
-    <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js" defer></script>
+    <script src="js/script.js" defer></script>
 </body>
 </html>

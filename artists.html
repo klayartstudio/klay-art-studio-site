@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <title>Artists | Klay Art Studio</title>
     <meta name="description" content="The artists behind Klay Art Studio's paintings and prints: Faisal Md. Mahfuz and Rumana Rahman. Klay Art Studio, Dhaka.">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap">
     <link rel="icon" type="image/png" href="images/logo/logo-mark.png">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
 </head>
@@ -21,7 +25,7 @@
     </div>
 
     <header>
-        <a href="/" class="logo"><img src="images/logo/logo-full.png" alt="" class="logo-img"><span class="logo-text">Klay Art Studio</span></a>
+        <a href="/" class="logo"><img src="images/logo/logo-full.png" alt="" class="logo-img" width="54" height="42"><span class="logo-text">Klay Art Studio</span></a>
         <button id="menu-toggle" aria-label="Toggle menu">
             <span></span>
             <span></span>
@@ -49,14 +53,14 @@
 
         <div class="gallery gallery--boxed">
             <div class="gallery-item reveal" data-images="https://placehold.co/600x450/000000/f5f1ea?text=Faisal+Md.+Mahfuz">
-                <a href="faisal-md-mahfuz"><img src="https://placehold.co/600x450/000000/f5f1ea?text=Faisal+Md.+Mahfuz" alt="Portrait of Faisal Md. Mahfuz"></a>
+                <a href="faisal-md-mahfuz"><img fetchpriority="high" src="https://placehold.co/600x450/000000/f5f1ea?text=Faisal+Md.+Mahfuz" alt="Portrait of Faisal Md. Mahfuz"></a>
                 <h3><a href="faisal-md-mahfuz">Faisal Md. Mahfuz</a></h3>
                 <p>Ceramic designer and founder of Klay Art Studio, painting the Complexity Series in the hours the kiln allows.</p>
                 <a href="faisal-md-mahfuz">View profile</a> · <a href="complexity-series">View the work</a>
             </div>
 
             <div class="gallery-item reveal" data-images="images/rumana/portrait.jpg">
-                <a href="rumana-rahman"><img src="images/rumana/portrait.jpg" alt="Portrait of Rumana Rahman"></a>
+                <a href="rumana-rahman"><img loading="lazy" decoding="async" src="images/rumana/portrait.jpg" alt="Portrait of Rumana Rahman"></a>
                 <h3><a href="rumana-rahman">Rumana Rahman</a></h3>
                 <p>Printmaker and painter working across three series rooted in still life, memory, and the quiet corners of domestic life.</p>
                 <a href="rumana-rahman">View profile</a> · <a href="rumana-rahman">View the work</a>
@@ -74,7 +78,7 @@
         <p>WhatsApp: +880 1717-882222 · contact@klayartstudio.com</p>
     </footer>
 
-    <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js" defer></script>
+    <script src="js/script.js" defer></script>
 </body>
 </html>
