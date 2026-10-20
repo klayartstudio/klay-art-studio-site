@@ -27,6 +27,14 @@ a {
   text-decoration: none;
 }
 
+footer a,
+footer a:visited,
+footer a:hover,
+footer a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -1047,4 +1055,54 @@ button[type="submit"]:hover {
   .gallery {
     grid-template-columns: 1fr;
   }
+}
+.social-section {
+  padding: 5rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.social-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-paper);
+  opacity: 0.35;
+}
+
+.social-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.social-section p {
+  opacity: 0.75;
+  margin-bottom: 2rem;
+  max-width: 55ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.social-section p a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fb-plugin-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+}
+
+.fb-plugin-container iframe {
+  max-width: 100%;
+  border: none;
 }

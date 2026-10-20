@@ -333,7 +333,7 @@ function startShow(el) {
   el._timer = setInterval(() => {
     i = (i + 1) % imgs.length;
     img.src = imgs[i].trim();
-  }, 2200);
+  }, 3500);
 }
 
 function stopShow(el) {
