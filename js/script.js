@@ -372,6 +372,7 @@ const whatsappBtn = document.getElementById('whatsapp-send');
 
 if (whatsappBtn) {
   whatsappBtn.addEventListener('click', () => {
+    if (typeof fbq === 'function') fbq('track', 'Contact');
     const name = document.getElementById('name')?.value.trim();
     const email = document.getElementById('email')?.value.trim();
     const piece = document.getElementById('piece')?.value.trim();
@@ -388,6 +389,14 @@ if (whatsappBtn) {
       : 'Hello, I have a question for Klay Art Studio.';
 
     window.open(`https://wa.me/8801717882222?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+  });
+}
+
+// Track contact form enquiry submit
+const enquiryForm = document.querySelector('form[action*="formspree"]');
+if (enquiryForm) {
+  enquiryForm.addEventListener('submit', () => {
+    if (typeof fbq === 'function') fbq('track', 'Lead');
   });
 }
 
