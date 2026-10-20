@@ -1080,7 +1080,7 @@ button[type="submit"]:hover {
 
 .social-section p {
   opacity: 0.75;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   max-width: 55ch;
   margin-left: auto;
   margin-right: auto;
@@ -1091,18 +1091,149 @@ button[type="submit"]:hover {
   text-underline-offset: 3px;
 }
 
-.fb-plugin-container {
-  max-width: 500px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  border-radius: 8px;
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.social-card {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(245, 241, 234, 0.03);
+  border: 1px solid rgba(245, 241, 234, 0.12);
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.social-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 241, 234, 0.35);
+  background-color: rgba(245, 241, 234, 0.06);
+}
+
+.social-card-img {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--color-ink);
+}
+
+.social-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.social-card:hover .social-card-img img {
+  transform: scale(1.04);
+}
+
+.social-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: var(--color-paper);
+  padding: 0.25rem 0.6rem;
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(245, 241, 234, 0.2);
+}
+
+.social-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.social-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.social-card-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.social-card-body p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  opacity: 0.7;
+  margin-bottom: 1.25rem;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  flex-grow: 1;
+}
+
+.social-link {
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+  display: inline-block;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.social-card:hover .social-link {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.social-cta {
   display: flex;
   justify-content: center;
 }
 
-.fb-plugin-container iframe {
-  max-width: 100%;
-  border: none;
+.btn-facebook {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid rgba(245, 241, 234, 0.35);
+  background-color: transparent;
+  color: var(--color-paper);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-facebook:hover {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  border-color: var(--color-paper);
+  transform: translateY(-2px);
+}
+
+.btn-facebook svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .social-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .social-grid {
+    grid-template-columns: 1fr;
+  }
 }
